@@ -11,13 +11,13 @@
   --hex-width: calc(var(--edge-size) * 2);
   --hex-height: calc(var(--sqrt3) * var(--edge-size));
   --border-hover: 15px;
-  --soft-white: rgba(255, 255, 255, 1);
+  --soft-yellow: rgba(255, 255, 0, 1); /* Color amarillo */
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 body {
-  background: #151515;
+  background: black;
   margin-top: 100px;
 }
 
@@ -53,6 +53,7 @@ body {
   width: var(--edge-size);
   height: var(--hex-height);
   opacity: 0.5;
+  background: none; /* Sin fondo */
 }
 
 .hex:first-child {
@@ -78,7 +79,7 @@ body {
 .hex div:after {
   content: ' ';
   position: absolute;
-  background: var(--soft-white);
+  background: var(--soft-yellow); /* Color amarillo para las líneas */
   width: 100%;
   height: 1px;
   transition: height 0.3s var(--ease-out-quart);
@@ -108,6 +109,18 @@ body {
   transform-origin: center center;
 }
 
+#runText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black; /* Color del texto */
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+}
 </style>
 
 <body>
@@ -122,7 +135,7 @@ body {
   z-index: 10;
   text-align: center;
   pointer-events: none;
-">
+">
   RUN
 </p>
   <div id="systemMonitorButton" onclick="systemMonitor()">
